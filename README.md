@@ -1,4 +1,4 @@
-# Grupo Mok - Frontend
+# App Lista de usuarios
 
 ### Requisitos
 
