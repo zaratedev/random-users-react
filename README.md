@@ -1,5 +1,7 @@
 # App Lista de usuarios
 
+![Screenshot 2024-03-05 at 17 24 54](https://github.com/zaratedev/random-users-react/assets/29809845/77d45cb3-3524-40a2-a7a8-73cb9d2b7cb9)
+
 ### Requisitos
 
 - Node JS
