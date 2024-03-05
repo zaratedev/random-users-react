@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Grupo Mok - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Requisitos
 
-## Available Scripts
+- Node JS
+- NPM
 
-In the project directory, you can run:
+### Instalación
 
-### `npm start`
+- Clonar repositorio
+- Acceder al folder del proyecto
+- Ejecutar `npm install`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Ejecutar aplicación `npm start`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ejecuta la aplicación en modo de desarrollo.
+Abra [http://localhost:3000](http://localhost:3000) para verlo en su navegador.
 
-### `npm test`
+La página se recargará cuando realice cambios.
+También es posible que vea errores de pelusa en la consola.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### TODO
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [x] Fetch a 100 elementos usando la API.
+- [x] Muestra la data en un formato &lt;table&gt;, similar al ejemplo.
+- [x] Crear un botón que permita añadir color a la tabla (líneas pares sombreadas con #112233 y pares #556677).
+- [x] Crea un botón que permita ordenar alfabéticamente por país.
+- [x] Por cada línea de la tabla habilita un botón que pueda eliminar una línea de la tabla.
+- [x] Crea un botón que permita restaurar la información inicial de la tabla (recupere los registros borrados).
+- [x] Corrige todos los bugs que consideres.
+- [ ] Crea un botón que permita filtrar la data por país.
+- [ ] Evita ordenar la data cada vez que filtro por país.
+- [x] Ordena la data al clickear la columna header (titulo) de cada campo.

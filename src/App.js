@@ -4,7 +4,9 @@ import axios from 'axios';
 function App() {
   const [users, setUsers] = useState([]);
   const [shadedRows, setShadedRows] = useState(false);
-  const [sortOrderByCountry, setSortOrderByCountry] = useState('asc');
+  const [sortField, setSortField] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [deletedUsers, setDeletedUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -23,17 +25,45 @@ function App() {
     setShadedRows(prevState => !prevState);
   };
 
-  const toggleSortOrderByCountry = () => {
-    setSortOrderByCountry(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  };
+
+  const getField = (obj, field) => {
+    const keys = field.split('.');
+    return keys.reduce((acc, curr) => acc && acc[curr], obj);
+  };
+
+  const sortByField = (field) => {
+    setSortField(field);
+    toggleSortOrder();
   };
 
   const sortedUsers = [...users].sort((a, b) => {
-    if (sortOrderByCountry === 'asc') {
-      return a.location.country.localeCompare(b.location.country);
-    } else {
-      return b.location.country.localeCompare(a.location.country);
+    if (sortField) {
+      const fieldValueA = typeof getField(a, sortField) === 'string' ? getField(a, sortField).toLowerCase() : getField(a, sortField);
+      const fieldValueB = typeof getField(b, sortField) === 'string' ? getField(b, sortField).toLowerCase() : getField(b, sortField);
+  
+      if (sortOrder === 'asc') {
+        return fieldValueA && fieldValueB ? fieldValueA.localeCompare(fieldValueB) : 0;
+      } else {
+        return fieldValueA && fieldValueB ? fieldValueB.localeCompare(fieldValueA) : 0;
+      }
     }
+    return 0;
   });
+
+  const deleteUser = (userId) => {
+    const updatedUsers = users.filter(user => user.login.uuid !== userId);
+    const deletedUser = users.find(user => user.login.uuid === userId);
+    setUsers(updatedUsers);
+    setDeletedUsers(prevDeletedUsers => [...prevDeletedUsers, deletedUser]);
+  };
+
+  const restoreUsers = () => {
+    setUsers(prevUsers => [...prevUsers, ...deletedUsers]);
+    setDeletedUsers([]);
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -41,7 +71,7 @@ function App() {
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">Lista de usuarios</h1>
           <p className="mt-2 text-sm text-gray-700">
-            A list of all the users in your account including their name, title, email and role.
+            La información es obtenidad usando la API randomuser.me/api
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -57,10 +87,20 @@ function App() {
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
             type="button"
-            onClick={toggleSortOrderByCountry}
+            onClick={() => sortByField('location.country')}
             className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Ordenar por País
+          </button>
+        </div>
+
+        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+          <button
+            type="button"
+            onClick={restoreUsers}
+            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Restaurar
           </button>
         </div>
 
@@ -71,12 +111,21 @@ function App() {
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Nombre</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Género</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Teléfono</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Ciudad</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">País</th>
+                  <th onClick={() => sortByField('name.first')} scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                    <a href='#' className="group inline-flex">
+                      Nombre
+                    </a>
+                  </th>
+                  <th onClick={() => sortByField('email')} scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <a href='#' className="group inline-flex">
+                      Email
+                    </a>
+                  </th>
+                  <th onClick={() => sortByField('location.country')} scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <a href='#' className="group inline-flex">
+                      País
+                    </a>
+                  </th>
                   <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                     <span className="sr-only">Acciones</span>
                   </th>
@@ -96,17 +145,12 @@ function App() {
                         </div>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                      <div className="text-gray-900">{user.gender}</div>
-                    </td>
                     <td className='whitespace-nowrap px-3 py-5 text-sm text-gray-500'>{user.email}</td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{user.phone}</td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{user.location.city}</td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{user.location.country}</td>
                     <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                      <button onClick={() => deleteUser(user.login.uuid)} className="text-indigo-600 hover:text-indigo-900">
                         Delete<span className="sr-only">, {user.name.first}</span>
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}
